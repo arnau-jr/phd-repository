@@ -1,4 +1,4 @@
-# Repository
+# PID2021-124297NB-C31 Repository
 This repository contains LAMMPS scripts and Fortran codes used to obtain the results presented in publications `doi.org/10.1063/5.0147459` and `doi.org/10.1088/1742-5468/ad4024`. The codes provided are not ready to be run as-is and will require adaptation to work on a specific machine. This repository does not contain any simulation data, it instead includes all the necessary input files to generate it.
 
 The repository is organized in two main directories.
