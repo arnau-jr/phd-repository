@@ -1,0 +1,21 @@
+&input
+D = 2
+
+deltat = 0.001d0 !s
+Nt = 40000 !40 s @0.001
+!nmeas = 1000 !Every 1 s @0.001
+nmeas = 10 !Every 0.01 s @0.001, 4000 total points
+Nsamples = 100000
+
+DR = 0.16 !rad^2/s
+DT = 0.22 !um/s
+
+Npar = 2
+v_mode = "SINE"
+
+par(1) = 10.0 !v in um/ps
+par(2) = 1.0 !nu in 1/s, 1/T = nu
+
+seed = 0
+output_path="./result2Dsine1_10/"
+/

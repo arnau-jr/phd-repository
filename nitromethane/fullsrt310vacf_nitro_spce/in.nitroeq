@@ -1,0 +1,68 @@
+variable conv equal 4.184 
+
+#Initialitzation
+units real
+dimension 3
+newton on
+boundary p p p
+atom_style full
+read_data singlespce_nitro.data extra/bond/per/atom 6 extra/angle/per/atom 9 extra/dihedral/per/atom 6 extra/improper/per/atom 1
+include ../common_files/force_fields/ff.nitro.fullsrt.spce
+
+variable Natoms equal 24007
+replicate 8 8 8
+
+variable xLo equal -0.5*lx
+variable xHi equal 0.5*lx
+variable yLo equal -0.5*ly
+variable yHi equal 0.5*ly
+variable zLo equal -0.5*lz
+variable zHi equal 0.5*lz
+
+# Recenter system coords about the origin (0,0,0):
+displace_atoms all move ${xLo} ${yLo} ${zLo} units box
+
+# Adjust box dimensions:
+change_box all x final ${xLo} ${xHi} units box
+change_box all y final ${yLo} ${yHi} units box
+change_box all z final ${zLo} ${zHi} units box
+
+#Grouping and charge settings for water
+group oxy type 1
+group hyd type 2
+group water_atoms union oxy hyd
+
+set group oxy charge -0.8476
+set group hyd charge 0.4238
+
+
+variable natoms equal 1536
+include ../common_files/molecules/fullsrtcreate_nitro.lmp
+group nitro_atoms type 3 4 5 6
+group nitrogen type 4
+
+#Sim
+timestep 0.10
+neigh_modify delay 0 every 1 check yes
+
+velocity oxy create 310.0 89465
+velocity hyd create 310.0 45123
+velocity nitro_atoms create 310.0 7984563
+
+fix constrain all shake 1.0e-5 100 0 b 1 a 1
+fix 1 all nvt temp 310.0 310.0 10.0
+
+
+thermo 1000
+thermo_style custom step temp etotal press cpuremain
+
+run 100000 #10 ps equilibration
+
+#Every 0.5 fs @ 0.1 fs timestep
+dump out_nitro nitro_atoms custom 5 out_nitro.dat element xu yu zu vx vy vz
+dump_modify out_nitro element O H C N O H
+dump_modify out_nitro sort id
+
+run 20000000 #2 ns production
+
+unfix 1

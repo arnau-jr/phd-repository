@@ -1,0 +1,105 @@
+variable conv equal 4.184 
+
+#Initialitzation
+units real
+dimension 3
+newton on
+boundary p p p
+atom_style molecular
+read_data singleargon_nitro.data extra/bond/per/atom 6 extra/angle/per/atom 9 extra/dihedral/per/atom 6 extra/improper/per/atom 1
+include ../ff.argon.nitro
+
+variable Natoms equal 1000
+replicate 10 10 10
+
+variable xLo equal -0.5*lx
+variable xHi equal 0.5*lx
+variable yLo equal -0.5*ly
+variable yHi equal 0.5*ly
+variable zLo equal -0.5*lz
+variable zHi equal 0.5*lz
+
+# Recenter system coords about the origin (0,0,0):
+displace_atoms all move ${xLo} ${yLo} ${zLo} units box
+
+# Adjust box dimensions:
+change_box all x final ${xLo} ${xHi} units box
+change_box all y final ${yLo} ${yHi} units box
+change_box all z final ${zLo} ${zHi} units box
+
+
+create_atoms 2 single    -0.1256938291E-03      0.3834994319E-08      0.6781222655E-09
+create_atoms 3 single     0.1499448306E+01     -0.2609289635E-07      0.1055414928E-09
+create_atoms 4 single     0.2057376327E+01      0.1828650844E-07      0.1092531247E+01
+create_atoms 4 single     0.2057376326E+01      0.2911719356E-08     -0.1092531247E+01
+create_atoms 5 single    -0.3289321224E+00      0.1039223913E+01      0.7974184136E-07
+create_atoms 5 single    -0.3289321540E+00     -0.5196118723E+00     -0.8999943382E+00
+create_atoms 5 single    -0.3289321533E+00     -0.5196120090E+00      0.8999942609E+00
+
+
+variable Cid  index 1001
+variable Nid  index 1002   
+variable O1id index 1003
+variable O2id index 1004
+variable H1id index 1005
+variable H2id index 1006
+variable H3id index 1007
+
+create_bonds single/bond 1 ${Cid} ${Nid}
+create_bonds single/bond 2 ${Nid} ${O1id}
+create_bonds single/bond 2 ${Nid} ${O2id}
+create_bonds single/bond 3 ${Cid} ${H1id}
+create_bonds single/bond 3 ${Cid} ${H2id}
+create_bonds single/bond 3 ${Cid} ${H3id}
+
+create_bonds single/angle 1 ${Cid}  ${Nid} ${O1id} 
+create_bonds single/angle 1 ${Cid}  ${Nid} ${O2id}
+create_bonds single/angle 2 ${Nid}  ${Cid} ${H1id}
+create_bonds single/angle 2 ${Nid}  ${Cid} ${H2id}
+create_bonds single/angle 2 ${Nid}  ${Cid} ${H3id}
+create_bonds single/angle 3 ${O1id} ${Nid} ${O2id}
+create_bonds single/angle 4 ${H1id} ${Cid} ${H2id}
+create_bonds single/angle 4 ${H1id} ${Cid} ${H3id}
+create_bonds single/angle 4 ${H2id}  ${Cid} ${H3id}
+
+create_bonds single/dihedral 1 ${H1id} ${Cid} ${Nid} ${O1id}
+create_bonds single/dihedral 2 ${H1id} ${Cid} ${Nid} ${O2id}
+create_bonds single/dihedral 1 ${H2id} ${Cid} ${Nid} ${O1id}
+create_bonds single/dihedral 2 ${H2id} ${Cid} ${Nid} ${O2id}
+create_bonds single/dihedral 2 ${H3id} ${Cid} ${Nid} ${O1id}
+create_bonds single/dihedral 2 ${H3id} ${Cid} ${Nid} ${O2id}
+
+create_bonds single/improper 1 ${Cid} ${O1id} ${O2id} ${Nid}
+
+
+group nitro_atoms type 2 3 4 5
+
+
+#Equilibration
+thermo 10
+minimize 0.001 0.0001 500 1000
+reset_timestep 0
+
+#Sim
+timestep 0.10
+
+fix 1 all npt temp 300.0 300.0 100.0 iso 100.0 100.0 10.0
+velocity all create 300.0 984651
+
+dump output all atom 20000000 dump.final_conf 
+dump_modify output first no
+
+dump traj all xyz 10000 traj.xyz
+dump_modify traj element Ar C N O H
+
+dump out_nitro nitro_atoms custom 10000 out_nitro.dat element xu yu zu vx vy vz
+dump_modify out_nitro element Ar C N O H
+dump_modify out_nitro sort id
+
+#Restarts every 1 ps
+restart 10000 restarts/restart*
+run 20000000
+#run 75000
+
+unfix 1
+write_restart restart.argonpt

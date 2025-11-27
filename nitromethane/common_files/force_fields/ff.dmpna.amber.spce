@@ -1,0 +1,77 @@
+variable conv equal 4.184
+variable convcm equal 349.7551152992
+
+
+bond_style hybrid morse harmonic
+bond_coeff 1 harmonic 450.0 1.0
+bond_coeff 2 harmonic 340.2 1.40 #C-C ring
+bond_coeff 3 morse  60.0 2.005501 1.45 #C-N nitro
+bond_coeff 4 morse  93.3 2.459942 1.24 #N-O nitro
+bond_coeff 5 morse  60.0 2.005501 1.37 #C-N dimethyl
+bond_coeff 6 harmonic  353.8 1.46 #N-C dimethyl
+bond_coeff 7 morse  102.0 1.892486 1.10 #C-H dimethyl interior
+bond_coeff 8 morse  102.0 1.892486 1.09 #C-H dimethyl exterior
+bond_coeff 9 morse  102.0 1.892486 1.09 #C-H ring
+
+
+angle_style harmonic
+angle_coeff 1 55.0 109.47
+angle_coeff 2  70.1 120.0 #C-C-C ring
+angle_coeff 3  82.3 120.0 #C-C-N nitro
+angle_coeff 4  87.7 117.055 #C-N-O nitro
+angle_coeff 5  157.2 125.89 #O-N-O nitro
+angle_coeff 6  85.8 120.0 #C-C-N ring-dimethyl
+angle_coeff 7  70.8 120.3 #C-N-C ring-dimethyl
+angle_coeff 8  69.2 119.4 #C-N-C dimethyl 
+angle_coeff 9  62.5 111.7 #N-C-H dimethyl interior
+angle_coeff 10 62.5 109.1 #N-C-H dimethyl exterior
+angle_coeff 11 38.8 108.3 #H-C-H dimethyl interior-interior
+angle_coeff 12 38.8 108.0 #H-C-H dimethyl interior-exterior
+angle_coeff 13 47.6 120.0 #C-C-H ring
+
+dihedral_style fourier
+dihedral_coeff 1 1 1.8 2  180.0 #C-C-N-O ring-nitro same side
+dihedral_coeff 2 1 1.8 2  180.0 #C-C-N-O ring-nitro opposite side
+dihedral_coeff 3 1 10.0 2 180.0 #C-C-N-C ring-dimehtyl same side
+dihedral_coeff 4 1 10.0 2 180.0 #C-C-N-C ring-dimethyl opposite side
+dihedral_coeff 5 1 0.0 3  +180.0 #C-N-C-H interior same plane hydrogens
+dihedral_coeff 6 1 0.0 3  +60.50 #C-N-C-H exterior
+dihedral_coeff 7 1 0.0 3  -60.50 #C-N-C-H exterior
+
+improper_style harmonic
+improper_coeff 1 2.2  0.0 #H-C-C-C ring
+improper_coeff 2 2.2  0.0 #N-C-C-C ring-nitro
+improper_coeff 3 57.4 0.0 #C-N-O-O nitro
+improper_coeff 4 2.2  0.0 #N-C-C-C ring-dimehtyl
+improper_coeff 5 2.2  0.0 #C-N-C-C dimehtyl
+
+
+pair_style lj/cut/coul/long 10.0
+
+variable EHH equal 0.0220
+variable SHH equal 1.306
+
+variable ECC equal 0.0800
+variable SCC equal 2.138
+
+variable ENN equal 0.2000
+variable SNN equal 1.999
+
+variable EOO equal 0.1200
+variable SOO equal 1.683
+
+variable EOOW equal 0.1553
+variable SOOW equal 3.166
+
+variable EHHW equal 0.0
+variable SHHW equal 0.0
+
+
+pair_coeff * *  0.0 0.0
+pair_coeff 1 1 0.1553 3.166
+pair_coeff 1 3  $(sqrt(v_EOOW*v_ECC)) $((v_SOOW+v_SCC)/2)
+pair_coeff 1 4  $(sqrt(v_EOOW*v_ENN)) $((v_SOOW+v_SNN)/2)
+pair_coeff 1 5  $(sqrt(v_EOOW*v_EOO)) $((v_SOOW+v_SOO)/2)
+pair_coeff 1 6  $(sqrt(v_EOOW*v_EHH)) $((v_SOOW+v_SHH)/2)
+
+kspace_style pppm 1.0e-5 

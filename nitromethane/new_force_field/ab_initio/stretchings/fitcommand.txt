@@ -1,0 +1,1 @@
+python ../fit_stretch.py confs.xyz energies.dat 1 5 | tee fit.txt

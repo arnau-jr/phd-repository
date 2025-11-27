@@ -1,0 +1,55 @@
+variable conv equal 4.184
+
+
+bond_style morse
+bond_coeff 1 0.0 1.0 1.0
+bond_coeff 2 $(251.0419414/v_conv) 2.005501 1.499574
+bond_coeff 3 $(390.3702976/v_conv) 2.459942 1.226747
+bond_coeff 4 $(426.7713101/v_conv) 1.892486 1.090000
+
+
+angle_style harmonic
+angle_coeff 1 1.0 120.0
+angle_coeff 2 $(294.5211160/v_conv) 117.039960
+angle_coeff 3 $(224.8140505/v_conv) 107.560708
+angle_coeff 4 $(657.8485115/v_conv) 125.890000
+angle_coeff 5 $(149.9402930/v_conv) 111.321289
+
+dihedral_style fourier
+dihedral_coeff 1 1 $(0.27000/v_conv) 3  90.0
+dihedral_coeff 2 1 $(0.27000/v_conv) 3 -90.0
+
+
+improper_style cvff
+improper_coeff 1 $(120.18538/v_conv) -1 2
+
+pair_style buck 15.0
+
+variable AHH equal 9213.510/${conv}
+variable BHH equal 1/3.74
+variable CHH equal 136.3800/${conv}
+
+variable ACC equal 369726.330/${conv}
+variable BCC equal 1/3.60
+variable CCC equal 2439.3459/${conv}
+
+variable ANN equal 264795.246/${conv}
+variable BNN equal 1/3.78
+variable CNN equal 1668.3316/${conv}
+
+variable AOO equal 290437.820/${conv}
+variable BOO equal 1/3.96
+variable COO equal 1453.3114/${conv}
+
+variable ARR equal 695963.0
+variable BRR equal 0.24748
+variable CRR equal 1294.81
+
+
+pair_coeff * *  0.0 1.0 0.0
+pair_coeff 1 3  $(sqrt(v_ACC*v_ARR)) $((v_BCC+v_BRR)/2) $(sqrt(v_CCC*v_CRR))
+pair_coeff 1 4  $(sqrt(v_ANN*v_ARR)) $((v_BNN+v_BRR)/2) $(sqrt(v_CNN*v_CRR))
+pair_coeff 1 5  $(sqrt(v_AOO*v_ARR)) $((v_BOO+v_BRR)/2) $(sqrt(v_COO*v_CRR))
+pair_coeff 1 6  $(sqrt(v_AHH*v_ARR)) $((v_BHH+v_BRR)/2) $(sqrt(v_CHH*v_CRR))
+pair_coeff 1 1  $(sqrt(v_ARR*v_ARR)) $((v_BRR+v_BRR)/2) $(sqrt(v_CRR*v_CRR))
+

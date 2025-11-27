@@ -1,0 +1,106 @@
+variable conv equal 4.184 
+
+#Initialitzation
+units real
+dimension 3
+newton on
+boundary p p p
+atom_style full
+read_data singleempty_nitro.data extra/bond/per/atom 6 extra/angle/per/atom 9 extra/dihedral/per/atom 6 extra/improper/per/atom 1
+include ff.spce.nitro
+
+replicate 10 10 10
+
+variable xLo equal -0.5*lx
+variable xHi equal 0.5*lx
+variable yLo equal -0.5*ly
+variable yHi equal 0.5*ly
+variable zLo equal -0.5*lz
+variable zHi equal 0.5*lz
+
+# Recenter system coords about the origin (0,0,0):
+displace_atoms all move ${xLo} ${yLo} ${zLo} units box
+
+# Adjust box dimensions:
+change_box all x final ${xLo} ${xHi} units box
+change_box all y final ${yLo} ${yHi} units box
+change_box all z final ${zLo} ${zHi} units box
+
+
+#Central molecule definition and creation
+create_atoms 3 single    -0.1256938291E-03      0.3834994319E-08      0.6781222655E-09
+create_atoms 4 single     0.1499448306E+01     -0.2609289635E-07      0.1055414928E-09
+create_atoms 5 single     0.2057376327E+01      0.1828650844E-07      0.1092531247E+01
+create_atoms 5 single     0.2057376326E+01      0.2911719356E-08     -0.1092531247E+01
+create_atoms 6 single    -0.3289321224E+00      0.1039223913E+01      0.7974184136E-07
+create_atoms 6 single    -0.3289321540E+00     -0.5196118723E+00     -0.8999943382E+00
+create_atoms 6 single    -0.3289321533E+00     -0.5196120090E+00      0.8999942609E+00
+
+
+variable Cid  index 1
+variable Nid  index 2   
+variable O1id index 3
+variable O2id index 4
+variable H1id index 5
+variable H2id index 6
+variable H3id index 7
+
+create_bonds single/bond 2 ${Cid} ${Nid}
+create_bonds single/bond 3 ${Nid} ${O1id}
+create_bonds single/bond 3 ${Nid} ${O2id}
+create_bonds single/bond 4 ${Cid} ${H1id}
+create_bonds single/bond 4 ${Cid} ${H2id}
+create_bonds single/bond 4 ${Cid} ${H3id}
+
+create_bonds single/angle 2 ${Cid}  ${Nid} ${O1id} 
+create_bonds single/angle 2 ${Cid}  ${Nid} ${O2id}
+create_bonds single/angle 3 ${Nid}  ${Cid} ${H1id}
+create_bonds single/angle 3 ${Nid}  ${Cid} ${H2id}
+create_bonds single/angle 3 ${Nid}  ${Cid} ${H3id}
+create_bonds single/angle 4 ${O1id} ${Nid} ${O2id}
+create_bonds single/angle 5 ${H1id} ${Cid} ${H2id}
+create_bonds single/angle 5 ${H1id} ${Cid} ${H3id}
+create_bonds single/angle 5 ${H2id}  ${Cid} ${H3id}
+
+create_bonds single/dihedral 1 ${H1id} ${Cid} ${Nid} ${O1id}
+create_bonds single/dihedral 2 ${H1id} ${Cid} ${Nid} ${O2id}
+create_bonds single/dihedral 1 ${H2id} ${Cid} ${Nid} ${O1id}
+create_bonds single/dihedral 2 ${H2id} ${Cid} ${Nid} ${O2id}
+create_bonds single/dihedral 1 ${H3id} ${Cid} ${Nid} ${O1id}
+create_bonds single/dihedral 2 ${H3id} ${Cid} ${Nid} ${O2id}
+
+create_bonds single/improper 1 ${Cid} ${O1id} ${O2id} ${Nid}
+
+set atom ${Cid} charge -0.331
+set atom ${Nid} charge +0.717
+set atom ${O1id} charge -0.406
+set atom ${O2id} charge -0.406
+set atom ${H1id} charge +0.142
+set atom ${H2id} charge +0.142
+set atom ${H3id} charge +0.142
+
+
+
+group central_atoms type 3 4 5 6
+
+
+dump traj all xyz 5000 traj.xyz
+#dump traj all xyz 50 traj.xyz
+dump_modify traj element O H C N O H
+
+
+#Sim
+timestep 0.10
+neigh_modify delay 0 every 1 check yes 
+
+velocity all create 1000.0 986532 mom yes rot yes
+fix 1 all nve 
+
+
+thermo 500
+thermo_style custom step temp ebond eangle edihed eimp cpuremain
+#run 2505000  #500 confs
+#run 10005000 #2000 confs
+run 100005000 #20000 confs
+
+unfix 1

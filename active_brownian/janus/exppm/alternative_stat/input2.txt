@@ -1,0 +1,22 @@
+&input
+D = 2
+
+deltat = 0.01d0 !s
+Nt = 40000 !400 s @0.01
+!nmeas = 100 !Every 1 s @0.01
+nmeas = 10 !Every 0.1 s @0.01, 4000 total points
+Nsamples = 100000
+
+DR = 0.16 !rad^2/s
+DT = 0.22 !um/s
+
+Npar = 3
+v_mode = "EXPPM"
+
+par(1) = 10.0 !v in um/s same vmean=1
+par(2) = 4.0 !tau in s
+par(3) = 40.0 !T in s
+
+seed = 0
+output_path="./result2Dexp2_10/"
+/

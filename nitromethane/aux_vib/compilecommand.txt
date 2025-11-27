@@ -1,0 +1,2 @@
+f2py -llapack -m auxvibmod --fcompiler=gnu95 -c auxvib.f90
+

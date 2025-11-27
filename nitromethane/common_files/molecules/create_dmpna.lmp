@@ -1,0 +1,199 @@
+create_atoms 3 single     0.001093773468443    0.001236337129461    0.001896661232720
+create_atoms 3 single     1.401093872908369    0.002248606034714    0.001897539081308
+create_atoms 3 single     2.101095154580352    0.000304834540274    1.214331003677421
+create_atoms 3 single     1.401095715699464   -0.000196787799436    2.426769870516730
+create_atoms 3 single     0.001095507886029    0.001423424742255    2.426768356664027
+create_atoms 3 single    -0.698905872529778    0.001405466275177    1.214333523016308
+create_atoms 4 single     2.126094582201286   -0.002395574026857    3.682501480032929
+create_atoms 5 single     3.364454865065509   -0.003758210467993    3.618793677943196
+create_atoms 5 single     1.451740327704338   -0.002747626678690    4.723102134582760
+create_atoms 4 single    -0.683903979180981    0.000083546058971   -1.184553012495633
+create_atoms 3 single     0.039464132264870   -0.000081521925876   -2.452755578030186
+create_atoms 3 single    -2.143882238858083   -0.000984480133444   -1.192199983823246
+create_atoms 6 single     0.676651110130512   -0.890637780715083   -2.557170734558181
+create_atoms 6 single     0.673695753750123    0.892356927318083   -2.559083604292110
+create_atoms 6 single    -0.678682780467991   -0.002150308364299   -3.272733359496715
+create_atoms 6 single    -2.553629646631947    0.891768084513575   -0.697123054574304
+create_atoms 6 single    -2.552353429848153   -0.891222082736361   -0.691569250979716
+create_atoms 6 single    -2.494927941700853   -0.004451139864960   -2.224119804188831
+create_atoms 6 single     1.946098007560128    0.004042097144873   -0.942068759443945
+create_atoms 6 single     3.191095190468898   -0.001205561804229    1.214328013564943
+create_atoms 6 single    -0.543904792133277    0.002996432933356    3.370737008734864
+create_atoms 6 single    -1.788907312237264    0.001965317726488    1.214337872635668
+
+
+variable counter loop $(v_natoms+1) $(v_natoms+23)
+variable C01id  index ${counter}
+next counter
+variable C02id  index ${counter}
+next counter
+variable C03id  index ${counter}
+next counter
+variable C04id  index ${counter}
+next counter
+variable C05id  index ${counter}
+next counter
+variable C06id  index ${counter}
+next counter
+variable N07id  index ${counter}
+next counter
+variable O08id  index ${counter}
+next counter
+variable O09id  index ${counter}  
+next counter
+variable N10id  index ${counter}  
+next counter
+variable C11id  index ${counter}
+next counter
+variable C12id  index ${counter}
+next counter
+variable H13id  index ${counter}
+next counter
+variable H14id  index ${counter}
+next counter
+variable H15id  index ${counter}
+next counter
+variable H16id  index ${counter}
+next counter
+variable H17id  index ${counter}
+next counter
+variable H18id  index ${counter}
+next counter
+variable H19id  index ${counter}
+next counter
+variable H20id  index ${counter}
+next counter
+variable H21id  index ${counter}
+next counter
+variable H22id  index ${counter}
+
+
+#BONDS
+#C-C ring
+create_bonds single/bond 2 ${C01id} ${C02id}
+create_bonds single/bond 2 ${C02id} ${C03id}
+create_bonds single/bond 2 ${C03id} ${C04id}
+create_bonds single/bond 2 ${C04id} ${C05id}
+create_bonds single/bond 2 ${C05id} ${C06id}
+create_bonds single/bond 2 ${C06id} ${C01id}
+#C-N and N-O nitro bonds
+create_bonds single/bond 3 ${C04id} ${N07id}
+create_bonds single/bond 4 ${N07id} ${O08id}
+create_bonds single/bond 4 ${N07id} ${O09id}
+#C-N dimethyl and C-H dimethyl
+create_bonds single/bond 5 ${C01id} ${N10id}
+create_bonds single/bond 6 ${N10id} ${C11id}
+create_bonds single/bond 6 ${N10id} ${C12id}
+create_bonds single/bond 7 ${C11id} ${H13id}
+create_bonds single/bond 7 ${C11id} ${H14id}
+create_bonds single/bond 8 ${C11id} ${H15id}
+create_bonds single/bond 7 ${C12id} ${H16id}
+create_bonds single/bond 7 ${C12id} ${H17id}
+create_bonds single/bond 8 ${C12id} ${H18id}
+#C-H ring
+create_bonds single/bond 9 ${C02id} ${H19id}
+create_bonds single/bond 9 ${C03id} ${H20id}
+create_bonds single/bond 9 ${C05id} ${H21id}
+create_bonds single/bond 9 ${C06id} ${H22id}
+
+#BENDS
+#C-C-C ring
+create_bonds single/angle 2  ${C01id} ${C02id} ${C03id}
+create_bonds single/angle 2  ${C02id} ${C03id} ${C04id}
+create_bonds single/angle 2  ${C03id} ${C04id} ${C05id}
+create_bonds single/angle 2  ${C04id} ${C05id} ${C06id}
+create_bonds single/angle 2  ${C05id} ${C06id} ${C01id}
+create_bonds single/angle 2  ${C06id} ${C01id} ${C02id}
+#C-C-N, C-N-O, O-N-O nitro
+create_bonds single/angle 3  ${C03id} ${C04id} ${N07id}
+create_bonds single/angle 3  ${C05id} ${C04id} ${N07id}
+create_bonds single/angle 4  ${C04id} ${N07id} ${O08id}
+create_bonds single/angle 4  ${C04id} ${N07id} ${O09id}
+create_bonds single/angle 5  ${O08id} ${N07id} ${O09id}
+#C-C-N, C-N-C, C-N-C dimethyl
+create_bonds single/angle 6  ${C02id} ${C01id} ${N10id}
+create_bonds single/angle 6  ${C06id} ${C01id} ${N10id}
+create_bonds single/angle 7  ${C01id} ${N10id} ${C11id}
+create_bonds single/angle 7  ${C01id} ${N10id} ${C12id}
+create_bonds single/angle 8  ${C11id} ${N10id} ${C12id}
+#N-C-H dimethyl
+create_bonds single/angle 9  ${N10id} ${C11id} ${H13id}
+create_bonds single/angle 9  ${N10id} ${C11id} ${H14id}
+create_bonds single/angle 9  ${N10id} ${C12id} ${H16id}
+create_bonds single/angle 9  ${N10id} ${C12id} ${H17id}
+create_bonds single/angle 10  ${N10id} ${C11id} ${H15id}
+create_bonds single/angle 10  ${N10id} ${C12id} ${H18id}
+#H-C-H methyl
+create_bonds single/angle 11 ${H13id} ${C11id} ${H14id}
+create_bonds single/angle 12 ${H14id} ${C11id} ${H15id}
+create_bonds single/angle 12 ${H13id} ${C11id} ${H15id}
+create_bonds single/angle 11 ${H16id} ${C12id} ${H17id}
+create_bonds single/angle 12 ${H17id} ${C12id} ${H18id}
+create_bonds single/angle 12 ${H16id} ${C12id} ${H18id}
+#C-C-H ring
+create_bonds single/angle 13 ${C01id} ${C02id} ${H19id}
+create_bonds single/angle 13 ${C03id} ${C02id} ${H19id}
+create_bonds single/angle 13 ${C02id} ${C03id} ${H20id}
+create_bonds single/angle 13 ${C04id} ${C03id} ${H20id}
+create_bonds single/angle 13 ${C04id} ${C05id} ${H21id}
+create_bonds single/angle 13 ${C06id} ${C05id} ${H21id}
+create_bonds single/angle 13 ${C01id} ${C06id} ${H22id}
+create_bonds single/angle 13 ${C05id} ${C06id} ${H22id}
+
+#DIHEDRALS
+#C-C-N-O
+create_bonds single/dihedral 1 ${C03id} ${C04id} ${N07id} ${O08id}
+create_bonds single/dihedral 1 ${C05id} ${C04id} ${N07id} ${O09id}
+create_bonds single/dihedral 2 ${C03id} ${C04id} ${N07id} ${O09id}
+create_bonds single/dihedral 2 ${C05id} ${C04id} ${N07id} ${O08id}
+#C-C-N-C
+create_bonds single/dihedral 3 ${C02id} ${C01id} ${N10id} ${C11id}
+create_bonds single/dihedral 3 ${C06id} ${C01id} ${N10id} ${C12id}
+create_bonds single/dihedral 4 ${C02id} ${C01id} ${N10id} ${C12id}
+create_bonds single/dihedral 4 ${C06id} ${C01id} ${N10id} ${C11id}
+#C-N-C-H 
+create_bonds single/dihedral 5 ${C01id} ${N10id} ${C11id} ${H15id}
+create_bonds single/dihedral 5 ${C01id} ${N10id} ${C12id} ${H18id}
+create_bonds single/dihedral 6 ${C01id} ${N10id} ${C11id} ${H13id}
+create_bonds single/dihedral 6 ${C01id} ${N10id} ${C12id} ${H16id}
+create_bonds single/dihedral 7 ${C01id} ${N10id} ${C11id} ${H14id}
+create_bonds single/dihedral 7 ${C01id} ${N10id} ${C12id} ${H17id}
+
+#IMPROPERS
+#H-C-C-C
+create_bonds single/improper 1 ${H19id} ${C01id} ${C03id} ${C02id}
+create_bonds single/improper 1 ${H20id} ${C02id} ${C04id} ${C03id}
+create_bonds single/improper 1 ${H21id} ${C04id} ${C06id} ${C05id}
+create_bonds single/improper 1 ${H22id} ${C05id} ${C01id} ${C06id}
+#C-N-C-C
+create_bonds single/improper 2 ${N07id} ${C03id} ${C05id} ${C04id}
+#C-N-O-O
+create_bonds single/improper 3 ${C04id} ${O09id} ${O08id} ${N07id}
+#N-C-C-C
+create_bonds single/improper 4 ${N10id} ${C06id} ${C02id} ${C01id}
+#C-N-C-C
+create_bonds single/improper 5 ${C01id} ${C11id} ${C12id} ${N10id}
+
+#CHARGES
+set atom ${C01id}  charge  0.2086
+set atom ${C02id}  charge -0.2556
+set atom ${C03id}  charge -0.1910
+set atom ${C04id}  charge  0.1087
+set atom ${C05id}  charge -0.1951
+set atom ${C06id}  charge -0.2504
+set atom ${N07id}  charge  0.6745
+set atom ${O08id}  charge -0.4535
+set atom ${O09id}  charge -0.4539
+set atom ${N10id}  charge  0.0370
+set atom ${C11id}  charge -0.2679
+set atom ${C12id}  charge -0.2714
+set atom ${H13id}  charge  0.0943
+set atom ${H14id}  charge  0.1271
+set atom ${H15id}  charge  0.0928
+set atom ${H16id}  charge  0.0937
+set atom ${H17id}  charge  0.1282
+set atom ${H18id}  charge  0.0946
+set atom ${H19id}  charge  0.1634
+set atom ${H20id}  charge  0.1622
+set atom ${H21id}  charge  0.1764
+set atom ${H22id}  charge  0.1774

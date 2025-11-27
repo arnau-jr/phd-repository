@@ -1,0 +1,21 @@
+&input
+D = 2
+
+deltat = 0.01d0 !s
+Nt = 40000 !400 s @0.001
+nmeas = 10 !Every 0.1 s @0.01, 4000 total points
+Nsamples = 1000000
+
+
+DR = 0.16 !rad^2/s
+DT = 0.22 !um/s
+
+Npar = 2
+v_mode = "HARM"
+
+par(1) = 2.0 !v in um/s
+par(2) = 0.01 !freq in 1/s
+
+seed = 0
+output_path="./result2Dharm2/"
+/

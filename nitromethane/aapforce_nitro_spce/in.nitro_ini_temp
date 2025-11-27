@@ -1,0 +1,17 @@
+#Restore system
+read_restart ../common_files/srt_nitro_spce512_300_eq/restarts/restartINDEX
+include ../common_files/force_fields/ff.nitro.srt.spce
+
+group solvent_atoms type 1 2
+group central_atoms type 3 4 5 6
+
+fix constrain all shake 1.0e-5 100 0 b 1 a 1
+fix 1 all nve
+
+#dump traj all xyz 10 traj.xyz
+#dump_modify traj element O H C N O H
+
+reset_timestep 0
+thermo 100
+timestep 0.05
+neigh_modify delay 0 every 1 check yes

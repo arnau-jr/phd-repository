@@ -1,0 +1,58 @@
+create_atoms 3 single    -0.1256938291E-03      0.3834994319E-08      0.6781222655E-09
+create_atoms 4 single     0.1499448306E+01     -0.2609289635E-07      0.1055414928E-09
+create_atoms 5 single     0.2057376327E+01      0.1828650844E-07      0.1092531247E+01
+create_atoms 5 single     0.2057376326E+01      0.2911719356E-08     -0.1092531247E+01
+create_atoms 6 single    -0.3289321224E+00      0.1039223913E+01      0.7974184136E-07
+create_atoms 6 single    -0.3289321540E+00     -0.5196118723E+00     -0.8999943382E+00
+create_atoms 6 single    -0.3289321533E+00     -0.5196120090E+00      0.8999942609E+00
+
+
+variable counter loop $(v_natoms+1) $(v_natoms+8)
+variable C01id  index ${counter}
+next counter
+variable N02id  index ${counter}
+next counter
+variable O03id  index ${counter}
+next counter
+variable O04id  index ${counter}
+next counter
+variable H05id  index ${counter}
+next counter
+variable H06id  index ${counter}
+next counter
+variable H07id  index ${counter}
+
+
+create_bonds single/bond 2 ${C01id} ${N02id}
+create_bonds single/bond 3 ${N02id} ${O03id}
+create_bonds single/bond 3 ${N02id} ${O04id}
+create_bonds single/bond 4 ${C01id} ${H05id}
+create_bonds single/bond 4 ${C01id} ${H06id}
+create_bonds single/bond 4 ${C01id} ${H07id}
+
+create_bonds single/angle 2 ${C01id}  ${N02id} ${O03id} 
+create_bonds single/angle 2 ${C01id}  ${N02id} ${O04id}
+create_bonds single/angle 3 ${N02id}  ${C01id} ${H05id}
+create_bonds single/angle 3 ${N02id}  ${C01id} ${H06id}
+create_bonds single/angle 3 ${N02id}  ${C01id} ${H07id}
+create_bonds single/angle 4 ${O03id}  ${N02id} ${O04id}
+create_bonds single/angle 5 ${H05id}  ${C01id} ${H06id}
+create_bonds single/angle 5 ${H05id}  ${C01id} ${H07id}
+create_bonds single/angle 5 ${H06id}  ${C01id} ${H07id}
+
+create_bonds single/dihedral 1 ${H05id} ${C01id} ${N02id} ${O03id}
+create_bonds single/dihedral 2 ${H05id} ${C01id} ${N02id} ${O04id}
+create_bonds single/dihedral 1 ${H06id} ${C01id} ${N02id} ${O03id}
+create_bonds single/dihedral 2 ${H06id} ${C01id} ${N02id} ${O04id}
+create_bonds single/dihedral 1 ${H07id} ${C01id} ${N02id} ${O03id}
+create_bonds single/dihedral 2 ${H07id} ${C01id} ${N02id} ${O04id}
+
+create_bonds single/improper 1 ${C01id} ${O03id} ${O04id} ${N02id}
+
+set atom ${C01id} charge -0.331
+set atom ${N02id} charge +0.717
+set atom ${O03id} charge -0.406
+set atom ${O04id} charge -0.406
+set atom ${H05id} charge +0.142
+set atom ${H06id} charge +0.142
+set atom ${H07id} charge +0.142

@@ -1,0 +1,14 @@
+3 !Streching scans
+4 9    0.9 1.2 0.05 2  7 8 #CN Nitro
+9 7    0.9 1.1 0.05 0 #NO Nitro
+9 8    0.9 1.1 0.05 0 #NO Nitro
+5 !Angle scans
+3  4  9    -5.0 5.0 0.5 0  0 #CCN nitro
+5  4  9    -5.0 5.0 0.5 0  0 #CCN nitro
+4  9  7    -5.0 5.0 0.5 0  0 #CNO nitro
+4  9  8    -5.0 5.0 0.5 0  0 #CNO nitro
+7  9  8    -5.0 5.0 0.5 0  0 #ONO nitro
+3 !Dihedral and improper scans
+2  3  4  9   -10.0 10.0 1.0 #CCCN nitro 
+3  4  9  7   -10.0 10.0 1.0 #CCCO nitro
+5  4  9  8   -10.0 10.0 1.0 #CCCO nitro

@@ -1,0 +1,23 @@
+LAMMPS input data for use with read_data. AJ
+
+       0 atoms
+       0 bonds
+       0 angles
+
+       6  atom types
+       9  bond types
+       13 angle types
+       7  dihedral types
+       5  improper types
+
+    0.0 3.1      xlo xhi
+    0.0 3.1      ylo yhi
+    0.0 3.1      zlo zhi
+Masses
+
+1 15.9994
+2 1.008
+3 12.01
+4 14.01
+5 15.995
+6 1.008

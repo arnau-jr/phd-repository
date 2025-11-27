@@ -1,0 +1,56 @@
+variable conv equal 4.184
+
+
+bond_style hybrid morse harmonic
+bond_coeff 1 harmonic 450.0 1.0
+bond_coeff 2 morse  $(251.0419414/v_conv) 2.005501 1.499574
+bond_coeff 3 morse  $(390.3702976/v_conv) 2.459942 1.226747
+bond_coeff 4 morse  $(426.7713101/v_conv) 1.892486 1.090000
+
+
+angle_style harmonic
+angle_coeff 1 55.0 109.47
+angle_coeff 2 $(294.5211160/v_conv) 117.039960
+angle_coeff 3 $(224.8140505/v_conv) 107.560708
+angle_coeff 4 $(657.8485115/v_conv) 125.890000
+angle_coeff 5 $(149.9402930/v_conv) 111.321289
+
+dihedral_style fourier
+dihedral_coeff 1 1 $(0.27000/v_conv) 3  90.0
+dihedral_coeff 2 1 $(0.27000/v_conv) 3 -90.0
+
+
+improper_style cvff
+improper_coeff 1 $(120.18538/v_conv) -1 2
+
+pair_style lj/cut/coul/long 10.0
+
+variable EHH equal 0.07034
+variable SHH equal 2.73442
+
+variable ECC equal 0.39179
+variable SCC equal 3.46263
+
+variable ENN equal 0.43995
+variable SNN equal 3.17362
+
+variable EOO equal 0.51900
+variable SOO equal 2.99394
+
+variable EOOW equal 0.6497752
+variable SOOW equal 3.166
+
+variable EHHW equal 0.0
+variable SHHW equal 0.0
+
+
+pair_coeff * *  0.0 0.0
+pair_coeff 1 1 0.1553 3.166
+pair_coeff 1 3  $(sqrt(v_EOOW*v_ECC)/v_conv) $((v_SOOW+v_SCC)/2)
+pair_coeff 1 4  $(sqrt(v_EOOW*v_ENN)/v_conv) $((v_SOOW+v_SNN)/2)
+pair_coeff 1 5  $(sqrt(v_EOOW*v_EOO)/v_conv) $((v_SOOW+v_SOO)/2)
+pair_coeff 1 6  $(sqrt(v_EOOW*v_EHH)/v_conv) $((v_SOOW+v_SHH)/2)
+
+
+kspace_style pppm 1.0e-5 
+

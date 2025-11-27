@@ -1,0 +1,25 @@
+variable conv equal 4.184 
+
+#Restore system from npt eq
+read_restart /nfs/ajurado/phd/single_nitro_argon/equilibration/restarts/restartINDEX
+include /nfs/ajurado/phd/single_nitro_argon/ff.argon.nitro
+
+ATOM1001
+ATOM1002
+ATOM1003
+ATOM1004
+ATOM1005
+ATOM1006
+ATOM1007
+
+fix 1 all nve
+
+#Nitro coordinates and vels every 0.1 ps
+dump out_nitro nitro_atoms custom 2000 out_nitro.dat element x y z vx vy vz
+dump_modify out_nitro element Ar C N O H
+dump_modify out_nitro sort id
+
+reset_timestep 0
+thermo 1000
+timestep 0.05
+run 20000000 #1000 ps

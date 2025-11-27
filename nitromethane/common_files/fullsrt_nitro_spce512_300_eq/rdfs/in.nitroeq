@@ -1,0 +1,70 @@
+#Initialitzation
+units real
+dimension 3
+newton on
+boundary p p p
+atom_style full
+read_data ../../molecules/singlespce_nitro.data extra/bond/per/atom 6 extra/angle/per/atom 9 extra/dihedral/per/atom 6 extra/improper/per/atom 1
+include ../../force_fields/ff.nitro.fullsrt.spce
+
+replicate 8 8 8
+
+variable xLo equal -0.5*lx
+variable xHi equal 0.5*lx
+variable yLo equal -0.5*ly
+variable yHi equal 0.5*ly
+variable zLo equal -0.5*lz
+variable zHi equal 0.5*lz
+
+# Recenter system coords about the origin (0,0,0):
+displace_atoms all move ${xLo} ${yLo} ${zLo} units box
+
+# Adjust box dimensions:
+change_box all x final ${xLo} ${xHi} units box
+change_box all y final ${yLo} ${yHi} units box
+change_box all z final ${zLo} ${zHi} units box
+
+#Grouping and charge settings for water
+group oxy type 1
+group hyd type 2
+group water_atoms union oxy hyd
+
+set group oxy charge -0.8476
+set group hyd charge 0.4238
+
+
+variable natoms equal 1536
+include ../../molecules/fullsrtcreate_nitro.lmp
+group nitro_atoms type 3 4 5 6
+
+#Sim
+timestep 0.05
+neigh_modify delay 0 every 1 check yes
+
+velocity oxy create 300.0 89465
+velocity hyd create 300.0 45123
+velocity nitro_atoms create 300.0 7984563
+
+fix constrain all shake 1.0e-5 100 0 b 1 a 1
+fix 1 all nvt temp 300.0 300.0 10.0
+
+thermo 1000
+thermo_style custom step temp etotal press cpuremain
+run 200000 #10 ps
+reset_timestep 0
+
+compute grC all rdf 400 3 1 3 2
+compute grN all rdf 400 4 1 4 2
+compute grO all rdf 400 5 1 5 2
+compute grH all rdf 400 6 1 6 2
+compute grW all rdf 400 1 2 1 1 2 2
+
+fix outC all ave/time 100 20000 2000000 c_grC[*] ave running overwrite file grC.dat mode vector
+fix outN all ave/time 100 20000 2000000 c_grN[*] ave running overwrite file grN.dat mode vector
+fix outO all ave/time 100 20000 2000000 c_grO[*] ave running overwrite file grO.dat mode vector
+fix outH all ave/time 100 20000 2000000 c_grH[*] ave running overwrite file grH.dat mode vector
+fix outW all ave/time 100 20000 2000000 c_grW[*] ave running overwrite file grW.dat mode vector
+
+run 20000000 #1000 ps
+
+unfix 1

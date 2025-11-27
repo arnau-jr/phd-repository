@@ -1,0 +1,1 @@
+python ../../run_opts.py confs.xyz atom1 atom2 iini ifin

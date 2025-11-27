@@ -1,0 +1,1 @@
+python ../../../gen/gen.py ../../../eq/nitro_eq.xyz C-N.dat

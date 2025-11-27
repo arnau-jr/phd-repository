@@ -1,0 +1,19 @@
+&input
+D = 2
+
+deltat = 0.001d0 !s
+Nt = 400000 !4000 s @0.01
+nmeas = 100 !Every 0.1 s @0.01, 4000 total points
+Nsamples = 1
+
+DR = 0.16 !rad^2/s
+DT = 0.22 !um/s
+
+Npar = 1
+v_mode = "CONSTANT"
+
+par(1) = 0.0
+
+seed = 0
+output_path="./result0/"
+/
